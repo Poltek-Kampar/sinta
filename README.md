@@ -60,6 +60,34 @@ restart tomcat6
 sudo /etc/init.d/tomcat6 restart
 ```
 
+#### create MySQL database
+Create User sinta dengan password sinta
+```
+CREATE USER 'sinta'@'localhost' IDENTIFIED BY  'sinta';
+GRANT USAGE ON * . * TO  'sinta'@'localhost' IDENTIFIED BY  'sinta' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+```
+
+Buat database sinta, dan izinkan user sinta untuk mengakses database ini.
+```
+CREATE DATABASE IF NOT EXISTS  `sinta` ;
+GRANT ALL PRIVILEGES ON  `sinta` . * TO  'sinta'@'localhost';
+```
+
+terkadang mesti di FLUSH PRIVILEGES di mysqlnya.
+
+Perhatikan bahwa perintah SQL di atas untuk membuat user sinta dengan password sinta, jika Anda ingin mengubah settingan, Anda mesti mengubah source code
+```
+/home/sinta/public_html/admin/koneksi.jsp
+```
+
+#### Populate database dengan berkas *.sql yang diberikan
+kalau ada phpMyAdmin terkadang lebih gampang. kalau tidak, Anda dapat melakukannya di konsol dengan perintah
+```
+mysql -usinta -psinta sinta < sinta-2014-02-03.sql
+```
+arti perintah di atas adalah: mysql dengan user sinta, password sinta database sinta, lalu panggil semua perintah di berkas sinta-2014-02-03.sql ke database tadi.
+
+
 ### Optional: AJP Proxy
 Jika Apache telah berjalan di port 80, dan tomcat di port 8080, maka Anda dapat melakukan proxy sehingga apache yang di port 80 dapat mengakses SINTA tanpa harus menggunakan port 8080.
 
